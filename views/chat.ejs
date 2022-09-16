@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include("head.ejs") %>
+        <%- include("style.ejs") %>
+</head>
+
+<body>
+    <div class="open">
+        <label style="margin-right: 10px;" for="">
+            입장할 이름
+        </label>
+        <input class="input" id="name" style="width: 200px; height:32px" type="text">
+        <button onclick="enter(this)" class="custom-btn btn-12"><span>자! 드가자!</span><span>입장</span></button>
+    </div>
+
+    <div class="frame">
+        <div class="head-frame">롤갤</div>
+        <div class="modal_box">
+            <input style="color:black;margin-left:10px;word-break: break-all;" type="file" id="file_name">
+        </div>
+        <div class="triangle"></div>
+        <div class="body-frame">
+        </div>
+        <div class="foot-frame">
+            <select id="name_arr">
+            </select>
+            <div class="input_box">
+                <input class="input" id="msg" type="text">
+                <svg xmlns="http://www.w3.org/2000/svg" style="color: black; margin-bottom:2px;cursor: pointer;"
+                    width="16" height="16" fill="currentColor" class="bi bi-plus-square-dotted" viewBox="0 0 16 16"
+                    id="file">
+                    <path
+                        d="M2.5 0c-.166 0-.33.016-.487.048l.194.98A1.51 1.51 0 0 1 2.5 1h.458V0H2.5zm2.292 0h-.917v1h.917V0zm1.833 0h-.917v1h.917V0zm1.833 0h-.916v1h.916V0zm1.834 0h-.917v1h.917V0zm1.833 0h-.917v1h.917V0zM13.5 0h-.458v1h.458c.1 0 .199.01.293.029l.194-.981A2.51 2.51 0 0 0 13.5 0zm2.079 1.11a2.511 2.511 0 0 0-.69-.689l-.556.831c.164.11.305.251.415.415l.83-.556zM1.11.421a2.511 2.511 0 0 0-.689.69l.831.556c.11-.164.251-.305.415-.415L1.11.422zM16 2.5c0-.166-.016-.33-.048-.487l-.98.194c.018.094.028.192.028.293v.458h1V2.5zM.048 2.013A2.51 2.51 0 0 0 0 2.5v.458h1V2.5c0-.1.01-.199.029-.293l-.981-.194zM0 3.875v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zM0 5.708v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zM0 7.542v.916h1v-.916H0zm15 .916h1v-.916h-1v.916zM0 9.375v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zm-16 .916v.917h1v-.917H0zm16 .917v-.917h-1v.917h1zm-16 .917v.458c0 .166.016.33.048.487l.98-.194A1.51 1.51 0 0 1 1 13.5v-.458H0zm16 .458v-.458h-1v.458c0 .1-.01.199-.029.293l.981.194c.032-.158.048-.32.048-.487zM.421 14.89c.183.272.417.506.69.689l.556-.831a1.51 1.51 0 0 1-.415-.415l-.83.556zm14.469.689c.272-.183.506-.417.689-.69l-.831-.556c-.11.164-.251.305-.415.415l.556.83zm-12.877.373c.158.032.32.048.487.048h.458v-1H2.5c-.1 0-.199-.01-.293-.029l-.194.981zM13.5 16c.166 0 .33-.016.487-.048l-.194-.98A1.51 1.51 0 0 1 13.5 15h-.458v1h.458zm-9.625 0h.917v-1h-.917v1zm1.833 0h.917v-1h-.917v1zm1.834-1v1h.916v-1h-.916zm1.833 1h.917v-1h-.917v1zm1.833 0h.917v-1h-.917v1zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                </svg>
+            </div>
+            <div class="send_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z" />
+                </svg>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        var socket = undefined;
+        var name = "all";
+        var my_name = undefined;
+        var my_id = undefined;
+        var real_name = "all";
+        var isshow = false;
+        var real_file_name = undefined;
+        const enter = (obj) => {
+            var chatBox = document.querySelector(".body-frame");
+
+            $(obj).parent().css({
+                "display": "none"
+            })
+            $(".frame").css({
+                "display": "flex"
+            })
+            socket = io.connect();
+            console.log(socket);
+            //name = $("#name").val();
+            my_name = $("#name").val();
+            socket.emit("sendName", $("#name").val())
+            socket.on("sendName", (msg) => {
+                my_id = msg;
+            })
+            socket.on("enter", (msg) => {
+                console.log(msg, "반가워용");
+                $(".body-frame").append(`<p>${msg} 님이 입장하셨습니다</p>`)
+            })
+            socket.on("dis", (msg) => {
+                $(".body-frame").append(`<p>${msg}</p>`)
+            })
+
+            socket.on("member", (msg) => {
+                let html = `<option value="all" selected>모두에게</option>`
+                for (let i = 0; i < Object.keys(msg).length; i++) {
+                    if (msg[Object.keys(msg)[i]][0] != my_name) {
+                        html += `<option value="${Object.keys(msg)[i]}">${msg[Object.keys(msg)[i]][0]}</option>`
+                    }
+                }
+                $("#name_arr").html(html);
+            })
+            socket.on("recieve", (msg) => {
+                console.log("recieve");
+                $(".body-frame").append(`<div class="by_msgBox">
+                    <div class="box">
+                        <div class="profile">${msg.my_name[0]}</div>
+                        <span class="Name_text">${msg.my_name}</span>
+                    </div>
+                    <div class="by_msg">${msg.msg}</div>
+                </div>`)
+                chatBox.scrollTo(0, chatBox.scrollHeight)
+            })
+            socket.on("recieveimg", (msg) => {
+                console.log("recieveimg");
+                $(".body-frame").append(`<div class="by_msgBox">
+                    <div class="box">
+                        <div class="profile">${msg.my_name[0]}</div>
+                        <span class="Name_text">${msg.my_name}</span>
+                    </div>
+                    <div class="by_msg">
+                        <img src="/static/img/${msg.msg}" alt="" width="100%" height: 200px;>
+                    </div>
+                </div>`)
+
+                setTimeout(()=>{
+                    chatBox.scrollTo(0, chatBox.scrollHeight)
+                    console.log("hi")
+                },100)
+            })
+            socket.on("receiveimgDM", (msg) => {
+                console.log("recieveimgDM");
+                $(".body-frame").append(`<div class="by_msgBox">
+                    <div class="box">
+                        <div class="profile">${msg.my_name[0]}</div>
+                        <span class="Name_text">${msg.my_name}</span>
+                        <span class="DM_text">(DM)</span>
+                    </div>
+                    <div class="by_msg">
+                        <img src="/static/img/${msg.msg}" alt="" width="100%" height: 200px;>
+                    </div>
+                </div>`)
+
+                setTimeout(()=>{
+                    chatBox.scrollTo(0, chatBox.scrollHeight)
+                    console.log("hi")
+                },100)
+            })
+            socket.on("toyou", (msg) => {
+                console.log("toyou");
+                $(".body-frame").append(`<div class="by_msgBox">
+                    <div class="box">
+                        <div class="profile">${msg.my_name[0]}</div>
+                        <span class="Name_text">${msg.my_name}</span>
+                        <span class="DM_text">(DM)</span>
+                    </div>
+                    <div class="by_msg">${msg.msg}</div>
+                </div>`)
+                chatBox.scrollTo(0, chatBox.scrollHeight)
+            })
+            $("select[id=name_arr]").change(function () {
+                console.log($(this).val());
+                console.log($("#name_arr option:selected").text());
+                real_name = $("#name_arr option:selected").text();
+                name = $(this).val(); //value값 가져오기
+            });
+            $("#msg").on("keydown", (key) => {
+                if (key.keyCode == 13) {
+                    if ($("#msg").val().length != 0) {
+                        console.log($("#msg").val());
+                        socket.emit("send", { my_name: my_name, real_name: real_name, name: name, msg: $("#msg").val() })
+                        $(".body-frame").append(`<div class="msgBox">
+                            <div class="box">
+                                <span class="Name_text">${my_name}</span>
+                                <div class="profile">나</div>
+                            </div>
+                        <div class="my_msg">${$("#msg").val()}</div>
+                    </div>`)
+                        chatBox.scrollTo(0, chatBox.scrollHeight)
+                        $("#msg").val("")
+                    }
+                }
+            });
+            $(".send_icon").click(() => {
+                if (real_file_name != undefined) {
+                    socket.emit("imgfile", { my_name: my_name, real_name: real_name, name: name, msg: real_file_name })
+                    $(".body-frame").append(`<div class="msgBox">
+                        <div class="box">
+                            <span class="Name_text">${my_name}</span>
+                            <div class="profile">나</div>
+                        </div>
+                        <div class="my_msg">
+                            <img src="/static/img/${real_file_name}" alt="" width="100%">
+                        </div>
+                </div>`)
+                    $("#file_name").val("");
+                    $(".modal_box, .triangle").css({
+                        "display": "none"
+                    })
+                    isshow = false;
+                    real_file_name = undefined;
+                    setTimeout(()=>{
+                        chatBox.scrollTo(0, chatBox.scrollHeight)
+                        console.log("hi")
+                    },100)
+                }
+                if ($("#msg").val().length != 0) {
+                    console.log($("#msg").val());
+                    socket.emit("send", { my_name: my_name, real_name: real_name, name: name, msg: $("#msg").val() })
+                    $(".body-frame").append(`<div class="msgBox">
+                        <div class="box">
+                            <span class="Name_text">${my_name}</span>
+                            <div class="profile">나</div>
+                        </div>
+                    <div class="my_msg">${$("#msg").val()}</div>
+                </div>`)
+                    chatBox.scrollTo(0, chatBox.scrollHeight)
+                    $("#msg").val("")
+                }
+            })
+            $("#file_name").change(function () {
+                console.log("들어옴")
+                real_file_name = this.files[0].name
+                console.log(this.files[0].name);
+            })
+            $("#file").click(() => {
+                console.log("클릭됨")
+                if (isshow) {
+                    $(".modal_box").css({
+                        "display": "none"
+                    })
+                    $(".triangle").css({
+                        "display": "none"
+                    })
+                    isshow = false;
+                } else {
+                    $(".modal_box").css({
+                        "display": "flex"
+                    })
+                    $(".triangle").css({
+                        "display": "flex"
+                    })
+                    isshow = true;
+                }
+            })
+        }
+
+
+    </script>
+</body>
+
+</html>
