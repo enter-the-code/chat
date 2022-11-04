@@ -33,7 +33,7 @@
     - 프론트에서 소켓을 연결할 경우 닉네임을 key 소켓 id를 value로 두고 유저관리
     - 다시 전송시 유저 닉네임과 텍스트를 broadcast로 본인 외에 전송
 
-<img width="700" alt="스크린샷 2022-09-16 오후 2 42 27" src="https://user-images.githubusercontent.com/84896918/199922686-98bb89d9-8d74-40aa-8384-9d6867de8059.png">
+<img width="300" alt="스크린샷 2022-09-16 오후 2 42 27" src="https://user-images.githubusercontent.com/84896918/199922686-98bb89d9-8d74-40aa-8384-9d6867de8059.png">
 
 ![ezgif com-gif-maker (25)](https://user-images.githubusercontent.com/84896918/199922710-18c8a00a-ec80-4be6-8009-93a9ed9e182f.gif)
 
@@ -67,4 +67,10 @@ dm 기능 및 이미지 업로드 기능 ( **`jquery`**  `websocket` `javascript
 - 백엔드
     - 해당 텍스트를 정규 표현식으로 검사해 비속어를 미리 지정된 언어로 치환 후 프론트로 전송
 
-<img width="924" alt="스크린샷 2022-09-16 오후 2 55 41" src="https://user-images.githubusercontent.com/84896918/199922772-8a82dc32-573f-4819-aa03-e7bb34561387.png">
+<img width="300" alt="스크린샷 2022-09-16 오후 2 55 41" src="https://user-images.githubusercontent.com/84896918/199922772-8a82dc32-573f-4819-aa03-e7bb34561387.png">
+
+
+## 🖌️예상 이슈
+
+- 이미지가 미리 벡엔드에 저장되어 있지 않다면 이미지가 깨지게 됨
+
