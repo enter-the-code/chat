@@ -67,7 +67,7 @@ dm 기능 및 이미지 업로드 기능 ( **`jquery`**  `websocket` `javascript
 - 백엔드
     - 해당 텍스트를 정규 표현식으로 검사해 비속어를 미리 지정된 언어로 치환 후 프론트로 전송
 
-<img width="300" alt="스크린샷 2022-09-16 오후 2 55 41" src="https://user-images.githubusercontent.com/84896918/199922772-8a82dc32-573f-4819-aa03-e7bb34561387.png">
+<img width="500" alt="스크린샷 2022-09-16 오후 2 55 41" src="https://user-images.githubusercontent.com/84896918/199922772-8a82dc32-573f-4819-aa03-e7bb34561387.png">
 
 
 ## 🖌️예상 이슈
